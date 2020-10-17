@@ -18,6 +18,7 @@ var svg = d3.select("#scatter")
 
 //Read the data
 d3.csv("./assets/data/data.csv").then(riskData => {
+    console.log(riskData);
     // Add X axis
     var x = d3.scaleLinear()
       .domain([0, 4000])
