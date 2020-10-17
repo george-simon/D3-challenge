@@ -17,7 +17,7 @@ var svg = d3.select("#scatter")
           "translate(" + margin.left + "," + margin.top + ")");
 
 //Read the data
-d3.csv("./assets/data/data.csv", function(data) {
+d3.csv("./assets/data/data.csv").then(riskData => {
     // Add X axis
     var x = d3.scaleLinear()
       .domain([0, 4000])
@@ -44,4 +44,4 @@ d3.csv("./assets/data/data.csv", function(data) {
         .attr("r", 1.5)
         .style("fill", "#69b3a2")
 
-})
+}).catch(error => console.log(error));
