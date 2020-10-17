@@ -2,7 +2,7 @@
 // Reference: https://www.d3-graph-gallery.com/graph/scatter_basic.html
 //= ================================
 // set the dimensions and margins of the graph
-var margin = {top: 10, right: 30, bottom: 30, left: 60},
+var margin = {top: 20, right: 40, bottom: 50, left: 70},
     width = 460 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
@@ -28,15 +28,15 @@ d3.csv("./assets/data/data.csv").then(riskData => {
 
     // Add X axis
     var x = d3.scaleLinear()
-      .domain([0, d3.max(riskData, d => d.poverty)])
-      .range([ 0, width ]);
+      .domain([d3.min(riskData, d => d.poverty)* 0.8, d3.max(riskData, d => d.poverty)* 1.1])
+      .range([ 0, width]);
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x));
 
     // Add Y axis
     var y = d3.scaleLinear()
-      .domain([0, d3.max(riskData, d => d.healthcare)])
+      .domain([0, d3.max(riskData, d => d.healthcare)* 1.1])
       .range([ height, 0]);
     svg.append("g")
       .call(d3.axisLeft(y));
@@ -63,16 +63,16 @@ d3.csv("./assets/data/data.csv").then(riskData => {
       .attr("x", 0)
       .attr("y", 20)
       .classed("active", true)
-      .text("Poverty (%)");
+      .text("In Poverty (%)");
 
     // append y axis
-    chartGroup.append("text")
+    svg.append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", 0 - margin.left)
       .attr("x", 0 - (height / 2))
       .attr("dy", "1em")
       .classed("axis-text", true)
-      .text("Number of Billboard 500 Hits");
+      .text("Lacks Healthcare (%)");
 
 
 }).catch(error => console.log(error));
