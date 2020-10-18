@@ -64,7 +64,6 @@ d3.csv("./assets/data/data.csv").then(riskData => {
 
     // Adding labels to dots
     // resource: https://observablehq.com/@abebrath/scatterplot-of-text-labels
-
     //Create the state  text elements
     const label = svg.append("g")
         .attr("font-family", "Yanone Kaffeesatz")
@@ -80,20 +79,19 @@ d3.csv("./assets/data/data.csv").then(riskData => {
         .attr("y", d => d.y0)
         .text(d => d.abbr);
 
-    // sort of hack-y collision here - we are approximating the text labels as "square" (only possible due to the short 2 char state abbr)
-    //  with a maximum radius aprox. equal to the radius of the corresponding bubble (bubble_rad*0.7) and running collision on that. This is not true rectangular text element collision detection
+    // simulate 'collision' of state text labels and dots
     const simulation = d3.forceSimulation(riskData)
                          .force("collide", d3.forceCollide(d => d.radius * 0.7))
                          .force("x", d3.forceX(d => d.x0))
                          .force("y", d3.forceY(d => d.y0));
   
     simulation.on("tick", () => {
-     label.attr("x", d => d.x)
-          .attr("y", d => d.y);
+      label.attr("x", d => d.x)
+           .attr("y", d => d.y);
     });
 
     // invalidation.then(() => simulation.stop());
-
+    // End of text labels for dots
 
     // Create group for x-axis label
     var labelsGroup = svg.append("g")
