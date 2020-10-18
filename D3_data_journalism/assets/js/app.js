@@ -12,8 +12,8 @@ var margin = {top: 20, right: 40, bottom: 50, left: 70},
 // append the svg object to the body of the page
 var svg = d3.select("#scatter")
   .append("svg")
-    .attr("width", svgWidth) // width + margin.left + margin.right
-    .attr("height", svgHeight) //height + margin.top + margin.bottom
+    .attr("width", svgWidth)
+    .attr("height", svgHeight)
   .append("g")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
@@ -44,18 +44,37 @@ d3.csv("./assets/data/data.csv").then(riskData => {
       .call(d3.axisLeft(y));
 
     // Add dots
-    svg.append('g')
+    const bubble = svg.append('g')
       .selectAll("dot")
       .data(riskData)
       .enter()
       .append("circle")
-        .attr("cx", function (d) { return x(d.poverty); } )
-        .attr("cy", function (d) { return y(d.healthcare); } )
+        .attr("cx", d => x(d.poverty))
+        .attr("cy", d => y(d.healthcare))
         .attr("r", 11)
         .attr("opacity", 0.5)
         .attr("stroke", "black")
         .style("fill", "#69b3a2")
 
+    // Adding labels to dots
+    // resource: https://observablehq.com/@abebrath/scatterplot-of-text-labels
+
+    //Create the state  text elements
+    const label = svg.append("g")
+      .attr("font-family", "Yanone Kaffeesatz")
+      .attr("font-weight", 700)
+      .attr("text-anchor", "middle")
+    .selectAll("text")
+    .data(riskData)
+    .join("text")
+      .attr("id", "state")
+      .attr("opacity", 0)
+      .attr("dy", "0.35em")
+      .attr("x", d => d.x0)
+      .attr("y", d => d.y0)
+      // .attr("font-size", d => r(d.state)*1.5)
+      // .attr("fill", d => color(d.state))
+      .text(d => d.state);
 
     // Create group for x-axis label
     var labelsGroup = svg.append("g")
@@ -78,3 +97,4 @@ d3.csv("./assets/data/data.csv").then(riskData => {
 
 
 }).catch(error => console.log(error));
+
