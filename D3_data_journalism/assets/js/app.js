@@ -51,30 +51,49 @@ d3.csv("./assets/data/data.csv").then(riskData => {
       .append("circle")
         .attr("cx", d => x(d.poverty))
         .attr("cy", d => y(d.healthcare))
-        .attr("r", 11)
+        .attr("r", 13)
         .attr("opacity", 0.5)
         .attr("stroke", "black")
         .style("fill", "#69b3a2")
+
+    // home postions for dots
+    riskData.forEach(data => {
+      data.x0 = x(data.poverty)  //home x-position
+      data.y0 = y(data.healthcare)  //home y-position
+    });
 
     // Adding labels to dots
     // resource: https://observablehq.com/@abebrath/scatterplot-of-text-labels
 
     //Create the state  text elements
     const label = svg.append("g")
-      .attr("font-family", "Yanone Kaffeesatz")
-      .attr("font-weight", 700)
-      .attr("text-anchor", "middle")
-    .selectAll("text")
-    .data(riskData)
-    .join("text")
-      .attr("id", "state")
-      .attr("opacity", 0)
-      .attr("dy", "0.35em")
-      .attr("x", d => d.x0)
-      .attr("y", d => d.y0)
-      // .attr("font-size", d => r(d.state)*1.5)
-      // .attr("fill", d => color(d.state))
-      .text(d => d.state);
+        .attr("font-family", "Yanone Kaffeesatz")
+        .attr("font-weight", 700)
+        .attr("text-anchor", "middle")
+      .selectAll("text")
+      .data(riskData)
+      .join("text")
+        .attr("id", "abbr")
+        .attr("opacity", .75)
+        .attr("dy", "0.25em")
+        .attr("x", d => d.x0)
+        .attr("y", d => d.y0)
+        .text(d => d.abbr);
+
+    // sort of hack-y collision here - we are approximating the text labels as "square" (only possible due to the short 2 char state abbr)
+    //  with a maximum radius aprox. equal to the radius of the corresponding bubble (bubble_rad*0.7) and running collision on that. This is not true rectangular text element collision detection
+    const simulation = d3.forceSimulation(riskData)
+                         .force("collide", d3.forceCollide(d => d.radius * 0.7))
+                         .force("x", d3.forceX(d => d.x0))
+                         .force("y", d3.forceY(d => d.y0));
+  
+    simulation.on("tick", () => {
+     label.attr("x", d => d.x)
+          .attr("y", d => d.y);
+    });
+
+    // invalidation.then(() => simulation.stop());
+
 
     // Create group for x-axis label
     var labelsGroup = svg.append("g")
