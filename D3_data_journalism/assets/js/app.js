@@ -68,13 +68,14 @@ d3.csv("./assets/data/data.csv").then(riskData => {
     const label = svg.append("g")
         .attr("font-family", "Yanone Kaffeesatz")
         .attr("font-weight", 600)
+        .attr("font-size", 12.5)
         .attr("text-anchor", "middle")
       .selectAll("text")
       .data(riskData)
       .join("text")
         .attr("id", "abbr")
         .attr("opacity", .75)
-        .attr("dy", "0.10em")
+        .attr("dy", "0.3em")
         .attr("x", d => d.x0)
         .attr("y", d => d.y0)
         .text(d => d.abbr);
@@ -100,6 +101,9 @@ d3.csv("./assets/data/data.csv").then(riskData => {
     var povertyLabel = labelsGroup.append("text")
       .attr("x", 0)
       .attr("y", 20)
+      .attr("font-family", "Yanone Kaffeesatz")
+      .attr("font-weight", 600)
+      .attr("font-size", 12.5)
       .classed("active", true)
       .text("In Poverty (%)");
 
