@@ -51,7 +51,7 @@ d3.csv("./assets/data/data.csv").then(riskData => {
       .append("circle")
         .attr("cx", d => x(d.poverty))
         .attr("cy", d => y(d.healthcare))
-        .attr("r", 13)
+        .attr("r", 15)
         .attr("opacity", 0.5)
         .attr("stroke", "black")
         .style("fill", "#69b3a2")
@@ -67,21 +67,21 @@ d3.csv("./assets/data/data.csv").then(riskData => {
     //Create the state  text elements
     const label = svg.append("g")
         .attr("font-family", "Yanone Kaffeesatz")
-        .attr("font-weight", 700)
+        .attr("font-weight", 600)
         .attr("text-anchor", "middle")
       .selectAll("text")
       .data(riskData)
       .join("text")
         .attr("id", "abbr")
         .attr("opacity", .75)
-        .attr("dy", "0.25em")
+        .attr("dy", "0.10em")
         .attr("x", d => d.x0)
         .attr("y", d => d.y0)
         .text(d => d.abbr);
 
     // simulate 'collision' of state text labels and dots
     const simulation = d3.forceSimulation(riskData)
-                         .force("collide", d3.forceCollide(d => d.radius * 0.7))
+                         .force("collide", d3.forceCollide(d => d.radius * 0.5))
                          .force("x", d3.forceX(d => d.x0))
                          .force("y", d3.forceY(d => d.y0));
   
