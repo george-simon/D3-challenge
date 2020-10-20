@@ -103,7 +103,7 @@ d3.csv("./assets/data/data.csv").then(riskData => {
       .attr("y", 20)
       .attr("font-family", "Yanone Kaffeesatz")
       .attr("font-weight", 600)
-      .attr("font-size", 12.5)
+      .attr("font-size", 18)
       .classed("active", true)
       .text("In Poverty (%)");
 
@@ -112,6 +112,9 @@ d3.csv("./assets/data/data.csv").then(riskData => {
       .attr("transform", "rotate(-90)")
       .attr("y", 0 - margin.left)
       .attr("x", 0 - (height / 2))
+      .attr("font-family", "Yanone Kaffeesatz")
+      .attr("font-weight", 600)
+      .attr("font-size", 18)
       .attr("dy", "1em")
       .classed("axis-text", true)
       .text("Lacks Healthcare (%)");
